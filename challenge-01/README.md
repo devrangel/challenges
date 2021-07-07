@@ -24,26 +24,3 @@ O login é separado em duas *Role*:
 * student -> Apenas visualização das aulas
 * staff -> Visualização e edição dos conteúdos dos módulos
 
-## Requisitos
-* Módulos
-    * Listar em ordem alfabética
-    * Mostrar o total de aulas referente
-    * Cadastro deve conter
-        * Listagem
-        * Criação
-        * Edição
-        * Deleção de registros
-    * Atributos obrigatórios
-        * Id, Nome
-* Aulas
-    * Listado em ordem alfabética
-    * Cadastro deve conter
-        * Listagem
-        * Criação
-        * Edição
-        * Deleção de registros
-    * Atributos obrigatórios
-        * Id, Nome, Modulo e Data que acontecerá a aula
-* Geral
-    * Cadastro de usuários -> *student*
-    * Cadastro das aulas e módulos somente pelo *staff*
