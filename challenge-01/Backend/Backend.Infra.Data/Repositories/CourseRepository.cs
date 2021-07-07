@@ -32,6 +32,15 @@ namespace Backend.Infra.Data.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<ICollection<Course>> GetByModule(int id)
+        {
+            return await _context.Courses
+                .AsNoTracking()
+                .Where(x => x.ModuleId == id)
+                .OrderBy(x => x.Name.ValueName)
+                .ToListAsync();
+        }
+
         public async Task CreateAsync(Course course)
         {
             _context.Courses.Add(course);

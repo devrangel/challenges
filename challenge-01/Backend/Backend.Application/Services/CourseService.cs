@@ -36,6 +36,8 @@ namespace Backend.Application.Services
                     course.Id,
                     course.Name.ValueName,
                     course.Description.Message,
+                    course.Minutes,
+                    course.ImageSrc,
                     course.Date,
                     course.ModuleId);
 
@@ -58,22 +60,54 @@ namespace Backend.Application.Services
                     course.Id,
                     course.Name.ValueName,
                     course.Description.Message,
+                    course.Minutes,
+                    course.ImageSrc,
                     course.Date,
                     course.ModuleId);
 
             return dto;
         }
 
+        public async Task<ICollection<GetCourseDTO>> GetByModule(int id)
+        {
+            var courses = await _repository.GetByModule(id);
+
+            if (courses == null)
+            {
+                return null;
+            }
+
+            ICollection<GetCourseDTO> dtos = new List<GetCourseDTO>();
+
+            foreach (var course in courses)
+            {
+                var dto = new GetCourseDTO(
+                    course.Id,
+                    course.Name.ValueName,
+                    course.Description.Message,
+                    course.Minutes,
+                    course.ImageSrc,
+                    course.Date,
+                    course.ModuleId);
+
+                dtos.Add(dto);
+            }
+
+            return dtos;
+        }
+
         public async Task<List<Tuple<string, string>>> CreateAsync(PostCourseDTO courseDto)
         {
             var name = new Name(courseDto.Name);
             var description = new Description(courseDto.Description);
+            var minutes = courseDto.Minutes;
+            var imageSrc = courseDto.ImageSrc;
             int moduleId = courseDto.ModuleId;
             var date = courseDto.Date;
 
             if(DomainValidation.Length() == 0)
             {
-                await _repository.CreateAsync(new Course(name, description, moduleId, date));
+                await _repository.CreateAsync(new Course(name, description, minutes, imageSrc, moduleId, date));
                 return new List<Tuple<string, string>>();
             }
 
@@ -89,7 +123,7 @@ namespace Backend.Application.Services
                 return null;
             }
 
-            model.Update(courseDto.Name, courseDto.Description, courseDto.ModuleId, courseDto.Date);
+            model.Update(courseDto.Name, courseDto.Description, courseDto.Minutes, courseDto.ImageSrc, courseDto.ModuleId, courseDto.Date);
 
             if (DomainValidation.Length() == 0)
             {

@@ -21,7 +21,7 @@ namespace Backend.Application.Services
 
         public async Task<ICollection<GetModuleDTO>> GetAllAsync()
         {
-            var modules = await _repository.GetAllAsync();
+            var (modules, courses) = await _repository.GetAllAsync();
 
             if (modules == null)
             {
@@ -30,11 +30,35 @@ namespace Backend.Application.Services
 
             ICollection<GetModuleDTO> dtos = new List<GetModuleDTO>();
 
+            int totalHours = 0;
+            int totalCourses = 0;
             foreach (var module in modules)
             {
-                var dto = new GetModuleDTO(module.Id, module.Name.ValueName);
+                foreach(var course in courses)
+                {
+                    if(course.ModuleId == module.Id)
+                    {
+                        totalHours += (int)course.Minutes;
+                        totalCourses++;
+                    }
+                }
+                totalHours = (int)Math.Round(totalHours / 60.0);
+
+                if(totalHours == 0)
+                {
+                    totalHours = 1;
+                }
+
+                var dto = new GetModuleDTO(
+                    module.Id,
+                    module.Name.ValueName,
+                    totalCourses,
+                    totalHours,
+                    module.ImageSrc);
 
                 dtos.Add(dto);
+                totalHours = 0;
+                totalCourses = 0;
             }
 
             return dtos;
@@ -42,14 +66,28 @@ namespace Backend.Application.Services
         
         public async Task<GetModuleDTO> GetByIdAsync(int id)
         {
-            var module = await _repository.GetByIdAsync(id);
+            var (module, courses) = await _repository.GetByIdAsyncWithHours(id);
 
             if (module == null)
             {
                 return null;
             }
 
-            return new GetModuleDTO(module.Id, module.Name.ValueName);
+            int totalHours = 0;
+            int totalCourses = 0;
+            foreach (var course in courses)
+            {
+                totalHours += (int)course.Minutes;
+                totalCourses++;
+            }
+            totalHours = (int)Math.Round(totalHours / 60.0);
+
+            return new GetModuleDTO(
+                module.Id, 
+                module.Name.ValueName,
+                totalCourses,
+                totalHours, 
+                module.ImageSrc);
         }
         
         public async Task<List<Tuple<string, string>>> CreateAsync(PostModuleDTO moduleDto)
@@ -58,7 +96,7 @@ namespace Backend.Application.Services
 
             if (DomainValidation.Length() == 0)
             {
-                await _repository.CreateAsync(new Module(name));
+                await _repository.CreateAsync(new Module(name, moduleDto.ImageSrc));
                 return new List<Tuple<string, string>>();
             }
 
@@ -74,7 +112,7 @@ namespace Backend.Application.Services
                 return null;
             }
 
-            model.Update(moduleDto.Name);
+            model.Update(moduleDto.Name, moduleDto.ImageSrc);
 
             if (DomainValidation.Length() == 0)
             {

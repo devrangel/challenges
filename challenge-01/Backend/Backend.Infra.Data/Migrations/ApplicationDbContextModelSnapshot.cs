@@ -29,6 +29,12 @@ namespace Backend.Infra.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageSrc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Minutes")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("ModuleId")
                         .HasColumnType("int");
 
@@ -45,6 +51,9 @@ namespace Backend.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImageSrc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

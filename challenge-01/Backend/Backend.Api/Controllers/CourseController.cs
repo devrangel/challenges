@@ -49,6 +49,21 @@ namespace Backend.Api.Controllers
             return Ok(course);
         }
 
+        [HttpGet]
+        [Route("modules/{id:int}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ICollection<GetCourseDTO>>> GetByModule(int id)
+        {
+            var courses = await _service.GetByModule(id);
+
+            if (courses == null)
+            {
+                return NotFound(new { message = "Cursos não encontrados" });
+            }
+
+            return Ok(courses);
+        }
+
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "staff")]

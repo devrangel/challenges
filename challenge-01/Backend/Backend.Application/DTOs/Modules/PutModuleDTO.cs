@@ -12,10 +12,14 @@ namespace Backend.Application.DTOs.Modules
         [MaxLength(30)]
         public string Name { get; set; }
 
-        public PutModuleDTO(int id, string name)
+        [Required(ErrorMessage = "{0} is required")]
+        public string ImageSrc { get; set; }
+
+        public PutModuleDTO(int id, string name, string imageSrc)
         {
             Id = id;
             Name = name;
+            ImageSrc = imageSrc;
         }
     }
 }

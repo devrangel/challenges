@@ -17,12 +17,32 @@ namespace Backend.Infra.Data.Repositories
             _context = context;
         }
 
-        public async Task<ICollection<Module>> GetAllAsync()
+        public async Task<(ICollection<Module>, ICollection<Course>)> GetAllAsync()
         {
-            return await _context.Modules
+            var courses = await _context.Courses
+                .AsNoTracking()
+                .ToListAsync();
+
+            var modules = await _context.Modules
                 .AsNoTracking()
                 .OrderBy(x => x.Name.ValueName)
                 .ToListAsync();
+
+            return (modules, courses);
+        }
+
+        public async Task<(Module, ICollection<Course>)> GetByIdAsyncWithHours(int id)
+        {
+            var courses = await _context.Courses
+                .AsNoTracking()
+                .Where(x => x.ModuleId == id)
+                .ToListAsync();
+
+            var module = await _context.Modules
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return (module, courses);
         }
 
         public async Task<Module> GetByIdAsync(int id)
@@ -31,7 +51,7 @@ namespace Backend.Infra.Data.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
-        
+
         public async Task CreateAsync(Module module)
         {
             _context.Modules.Add(module);

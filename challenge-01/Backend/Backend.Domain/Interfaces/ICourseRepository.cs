@@ -8,6 +8,7 @@ namespace Backend.Domain.Interfaces
     {
         Task<ICollection<Course>> GetAllAsync();
         Task<Course> GetByIdAsync(int id);
+        Task<ICollection<Course>> GetByModule(int id);
         Task CreateAsync(Course course);
         Task UpdateAsync(Course course);
         Task RemoveAsync(Course course);
