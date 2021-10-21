@@ -16,7 +16,7 @@ namespace Backend.Infra.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Backend.Domain.Entities.Course", b =>
@@ -28,12 +28,6 @@ namespace Backend.Infra.Data.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("Minutes")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("ModuleId")
                         .HasColumnType("int");
@@ -51,9 +45,6 @@ namespace Backend.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ImageSrc")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -80,27 +71,6 @@ namespace Backend.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Backend.Domain.ValueObjects.Description", "Description", b1 =>
-                        {
-                            b1.Property<int>("CourseId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<string>("Message")
-                                .IsRequired()
-                                .HasMaxLength(140)
-                                .HasColumnType("nvarchar(140)")
-                                .HasColumnName("Description");
-
-                            b1.HasKey("CourseId");
-
-                            b1.ToTable("Courses");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CourseId");
-                        });
-
                     b.OwnsOne("Backend.Domain.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<int>("CourseId")
@@ -121,8 +91,6 @@ namespace Backend.Infra.Data.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("CourseId");
                         });
-
-                    b.Navigation("Description");
 
                     b.Navigation("Module");
 

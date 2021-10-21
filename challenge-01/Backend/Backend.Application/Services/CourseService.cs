@@ -35,9 +35,6 @@ namespace Backend.Application.Services
                 var dto = new GetCourseDTO(
                     course.Id,
                     course.Name.ValueName,
-                    course.Description.Message,
-                    course.Minutes,
-                    course.ImageSrc,
                     course.Date,
                     course.ModuleId);
 
@@ -59,9 +56,6 @@ namespace Backend.Application.Services
             var dto = new GetCourseDTO(
                     course.Id,
                     course.Name.ValueName,
-                    course.Description.Message,
-                    course.Minutes,
-                    course.ImageSrc,
                     course.Date,
                     course.ModuleId);
 
@@ -84,9 +78,6 @@ namespace Backend.Application.Services
                 var dto = new GetCourseDTO(
                     course.Id,
                     course.Name.ValueName,
-                    course.Description.Message,
-                    course.Minutes,
-                    course.ImageSrc,
                     course.Date,
                     course.ModuleId);
 
@@ -99,22 +90,19 @@ namespace Backend.Application.Services
         public async Task<List<Tuple<string, string>>> CreateAsync(PostCourseDTO courseDto)
         {
             var name = new Name(courseDto.Name);
-            var description = new Description(courseDto.Description);
-            var minutes = courseDto.Minutes;
-            var imageSrc = courseDto.ImageSrc;
             int moduleId = courseDto.ModuleId;
             var date = courseDto.Date;
 
             if(DomainValidation.Length() == 0)
             {
-                await _repository.CreateAsync(new Course(name, description, minutes, imageSrc, moduleId, date));
+                await _repository.CreateAsync(new Course(name, date, moduleId));
                 return new List<Tuple<string, string>>();
             }
 
             return DomainValidation.GetNotificationsAndClear();
         }
 
-        public async Task<List<Tuple<string, string>>> UpdateAsync(GetCourseDTO courseDto)
+        public async Task<List<Tuple<string, string>>> UpdateAsync(PutCourseDTO courseDto)
         {
             var model = await _repository.GetByIdAsync(courseDto.Id);
 
@@ -123,7 +111,7 @@ namespace Backend.Application.Services
                 return null;
             }
 
-            model.Update(courseDto.Name, courseDto.Description, courseDto.Minutes, courseDto.ImageSrc, courseDto.ModuleId, courseDto.Date);
+            model.Update(courseDto.Name, courseDto.Date, courseDto.ModuleId);
 
             if (DomainValidation.Length() == 0)
             {

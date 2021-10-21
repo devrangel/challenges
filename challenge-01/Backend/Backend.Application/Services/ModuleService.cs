@@ -30,7 +30,6 @@ namespace Backend.Application.Services
 
             ICollection<GetModuleDTO> dtos = new List<GetModuleDTO>();
 
-            int totalHours = 0;
             int totalCourses = 0;
             foreach (var module in modules)
             {
@@ -38,26 +37,17 @@ namespace Backend.Application.Services
                 {
                     if(course.ModuleId == module.Id)
                     {
-                        totalHours += (int)course.Minutes;
                         totalCourses++;
                     }
-                }
-                totalHours = (int)Math.Round(totalHours / 60.0);
-
-                if(totalHours == 0)
-                {
-                    totalHours = 1;
                 }
 
                 var dto = new GetModuleDTO(
                     module.Id,
                     module.Name.ValueName,
-                    totalCourses,
-                    totalHours,
-                    module.ImageSrc);
+                    totalCourses
+                );
 
                 dtos.Add(dto);
-                totalHours = 0;
                 totalCourses = 0;
             }
 
@@ -73,21 +63,17 @@ namespace Backend.Application.Services
                 return null;
             }
 
-            int totalHours = 0;
             int totalCourses = 0;
             foreach (var course in courses)
             {
-                totalHours += (int)course.Minutes;
                 totalCourses++;
             }
-            totalHours = (int)Math.Round(totalHours / 60.0);
 
             return new GetModuleDTO(
                 module.Id, 
                 module.Name.ValueName,
-                totalCourses,
-                totalHours, 
-                module.ImageSrc);
+                totalCourses
+           );
         }
         
         public async Task<List<Tuple<string, string>>> CreateAsync(PostModuleDTO moduleDto)
@@ -96,7 +82,7 @@ namespace Backend.Application.Services
 
             if (DomainValidation.Length() == 0)
             {
-                await _repository.CreateAsync(new Module(name, moduleDto.ImageSrc));
+                await _repository.CreateAsync(new Module(name));
                 return new List<Tuple<string, string>>();
             }
 
@@ -112,7 +98,7 @@ namespace Backend.Application.Services
                 return null;
             }
 
-            model.Update(moduleDto.Name, moduleDto.ImageSrc);
+            model.Update(moduleDto.Name);
 
             if (DomainValidation.Length() == 0)
             {

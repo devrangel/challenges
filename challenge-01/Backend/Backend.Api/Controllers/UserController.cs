@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Backend.Api.Controllers
 {
-    [Route("/users")]
+    [ApiController]
+    [Route("api/v1/users")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -21,7 +22,7 @@ namespace Backend.Api.Controllers
         [HttpGet]
         [Route("{id:int}")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult<GetUserDTO>> Get(int id)
+        public async Task<ActionResult<GetUserDTO>> Get([FromRoute] int id)
         {
             var user = await _service.GetByIdAsync(id);
 
@@ -47,6 +48,8 @@ namespace Backend.Api.Controllers
             {
                 var result = await _service.CreateAsync(model);
 
+                // Verifica se nao foi gerado nenhum erro na criacao usuario
+                // Caso tenha, result tera uma lista, count > 0, com os erros que aconteceram
                 if (result.Count != 0)
                 {
                     // Retornar um GetUserDTO que nao contem informacoes sensiveis
@@ -66,7 +69,7 @@ namespace Backend.Api.Controllers
         [HttpPost]
         [Route("signin")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody]AuthUserDTO user)
+        public async Task<ActionResult<object>> Authenticate([FromBody]AuthUserDTO user)
         {
             if (!ModelState.IsValid)
             {
@@ -82,7 +85,7 @@ namespace Backend.Api.Controllers
                     return NotFound(new { message = "Usuário ou senha inválidos" });
                 }
 
-                return result;
+                return Ok(result);
             }
             catch(Exception)
             {
@@ -93,7 +96,9 @@ namespace Backend.Api.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [Authorize]
-        public async Task<ActionResult> Put(int id, [FromBody]PutUserDTO model)
+        public async Task<ActionResult> Put(
+            [FromRoute] int id,
+            [FromBody] PutUserDTO model)
         {
             if(id != model.Id)
             {
@@ -114,6 +119,8 @@ namespace Backend.Api.Controllers
                     return NotFound(new { message = "Usuário não encontrado" });
                 }
 
+                // Verifica se nao foi gerado nenhum erro na criacao usuario
+                // Caso tenha, result tera uma lista, count > 0, com os erros que aconteceram
                 if (result.Count != 0)
                 {
                     // Retornar um GetUserDTO que nao contem informacoes sensiveis

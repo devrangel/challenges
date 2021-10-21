@@ -39,7 +39,7 @@ namespace Backend.Application.Services
             return dto;
         }
 
-        public async Task<dynamic> GetAuthUser(AuthUserDTO user)
+        public async Task<object> GetAuthUser(AuthUserDTO user)
         {
             var model = await _repository.GetAuthUser(user.Email, user.Password);
             

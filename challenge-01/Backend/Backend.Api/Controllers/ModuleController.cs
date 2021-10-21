@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Backend.Api.Controllers
 {
-    [Route("/modules")]
+    [ApiController]
+    [Route("api/v1/modules")]
     public class ModuleController : ControllerBase
     {
         private readonly IModuleService _service;
@@ -20,7 +21,6 @@ namespace Backend.Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
         [AllowAnonymous]
         public async Task<ActionResult<ICollection<GetModuleDTO>>> Get()
         {
@@ -50,9 +50,8 @@ namespace Backend.Api.Controllers
         }
 
         [HttpPost]
-        [Route("")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult> Post([FromBody]PostModuleDTO model)
+        public async Task<ActionResult> Post([FromBody] PostModuleDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -63,6 +62,8 @@ namespace Backend.Api.Controllers
             {
                 var result = await _service.CreateAsync(model);
 
+                // Verifica se nao foi gerado nenhum erro na criacao usuario
+                // Caso tenha, result tera uma lista, count > 0, com os erros que aconteceram
                 if (result.Count != 0)
                 {
                     return BadRequest(new { model = model, errorMessage = result });
@@ -79,7 +80,9 @@ namespace Backend.Api.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult> Put(int id, [FromBody]PutModuleDTO model)
+        public async Task<ActionResult> Put(
+            [FromRoute] int id,
+            [FromBody] PutModuleDTO model)
         {
             if (id != model.Id)
             {
@@ -100,6 +103,8 @@ namespace Backend.Api.Controllers
                     return NotFound(new { message = "Módulo não encontrado" });
                 }
 
+                // Verifica se nao foi gerado nenhum erro na criacao usuario
+                // Caso tenha, result tera uma lista, count > 0, com os erros que aconteceram
                 if (result.Count != 0)
                 {
                     return BadRequest(new { model = model, errorMessage = result });
@@ -120,7 +125,7 @@ namespace Backend.Api.Controllers
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             var model = await _service.GetByIdAsync(id);
 

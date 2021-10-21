@@ -32,13 +32,13 @@ namespace Backend.Infra.Data.Seeding
                 Username username2 = new Username("Usuario Dois", "Sobrenome Dois");
                 Email email2 = new Email("dois@dois");
                 Password pass2 = new Password("12345asdfg");
-                Role role2 = new Role("aluno");
+                Role role2 = new Role("student");
                 User user2 = new User(username2, email2, pass2, role2);
 
                 Username username3 = new Username("Usuario Tres", "Sobrenome Tres");
                 Email email3 = new Email("tres@tres");
                 Password pass3 = new Password("12345zxcvb");
-                Role role3 = new Role("aluno");
+                Role role3 = new Role("student");
                 User user3 = new User(username3, email3, pass3, role3);
 
                 _context.Users.AddRange(user1, user2, user3);
@@ -47,14 +47,10 @@ namespace Backend.Infra.Data.Seeding
 
             if (!_context.Modules.Any())
             {
-                Module backend = new Module(new Name(EModuleType.Backend.ToString()),
-                    "https://raw.githubusercontent.com/github/explore/93d8a67084f94b2a444e510199a6e7622e5b09a3/topics/dotnet/dotnet.png");
-                Module frontend = new Module(new Name(EModuleType.Frontend.ToString()),
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png");
-                Module devops = new Module(new Name(EModuleType.DevOps.ToString()),
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/docker/docker.png");
-                Module mobile  = new Module(new Name(EModuleType.Mobile.ToString()),
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/android/android.png");
+                Module backend = new Module(new Name(EModuleType.Backend.ToString()));
+                Module frontend = new Module(new Name(EModuleType.Frontend.ToString()));
+                Module devops = new Module(new Name(EModuleType.DevOps.ToString()));
+                Module mobile = new Module(new Name(EModuleType.Mobile.ToString()));
                 
                 _context.Modules.AddRange(mobile, devops, frontend, backend);
                 _context.SaveChanges();
@@ -62,65 +58,35 @@ namespace Backend.Infra.Data.Seeding
 
             if (!_context.Courses.Any())
             {
-                Name name1 = new Name("Fundamentos de C#");
-                Description description1 = new Description("Descrição dos fundamentos");
                 Course course1 = new Course(
-                    name1, 
-                    description1, 
-                    158, 
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/csharp/csharp.png",
-                    (int)EModuleType.Backend,
-                    DateTime.Now.AddHours(52));
+                    new Name("Fundamentos de C#"),
+                    DateTime.Now.AddHours(52),
+                    (int)EModuleType.Backend);
 
-                Name name2 = new Name(".NET 5.0");
-                Description description2 = new Description("Descrição do .NET");
                 Course course2 = new Course(
-                    name2, 
-                    description2, 
-                    210,
-                    "https://raw.githubusercontent.com/github/explore/93d8a67084f94b2a444e510199a6e7622e5b09a3/topics/dotnet/dotnet.png",
-                    (int)EModuleType.Backend, 
-                    DateTime.Now.AddHours(3));
+                    new Name(".NET 5.0"),
+                    DateTime.Now.AddHours(3),
+                    (int)EModuleType.Backend);
 
-                Name name3 = new Name("React");
-                Description description3 = new Description("Descrição do React");
                 Course course3 = new Course(
-                    name3, 
-                    description3, 
-                    52,
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png",
-                    (int)EModuleType.Frontend,
-                    DateTime.Now.AddHours(35));
+                    new Name("React"),
+                    DateTime.Now.AddHours(35),
+                    (int)EModuleType.Frontend);
 
-                Name name4 = new Name("Vue.js");
-                Description description4 = new Description("Descrição do Vue.js");
                 Course course4 = new Course(
-                    name4, 
-                    description4, 
-                    96,
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/vue/vue.png",
-                    (int)EModuleType.Frontend, 
-                    DateTime.Now.AddHours(2));
+                    new Name("Vue.js"),
+                    DateTime.Now.AddHours(2),
+                    (int)EModuleType.Frontend); 
 
-                Name name5 = new Name("Docker");
-                Description description5 = new Description("Descrição do Docker");
                 Course course5 = new Course(
-                    name5, 
-                    description5, 
-                    30,
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/docker/docker.png",
-                    (int)EModuleType.DevOps, 
-                    DateTime.Now.AddHours(28));
+                    new Name("Docker"),
+                    DateTime.Now.AddHours(28),
+                    (int)EModuleType.DevOps);
 
-                Name name6 = new Name("Android");
-                Description description6 = new Description("Descrição do Android");
                 Course course6 = new Course(
-                    name6, 
-                    description6, 
-                    48,
-                    "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/android/android.png",
-                    (int)EModuleType.Mobile,
-                    DateTime.Now.AddHours(64));
+                    new Name("Android"),
+                    DateTime.Now.AddHours(64),
+                    (int)EModuleType.Mobile);
 
                 _context.Courses.AddRange(course1, course2, course3, course4, course5, course6);
                 _context.SaveChanges();

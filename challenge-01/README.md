@@ -1,26 +1,24 @@
 # Teste Prático
 
 ## Proposta de solução
-Desenvolver um sistema com um catálogo de aulas dividido por módulos
+Desenvolver um sistema com um catálogo de aulas dividido por módulos.
 
 ## Tecnologias usadas
-* Backend
-    * Arquitetura
-        * Clean Architecture
-    * API Rest
-    * .NET 5
-    * SQL Server
-    * Swagger
-
-* Frontend
-    * React
-    * React Material UI
-    * Axios
+* Arquitetura
+    * Clean Architecture
+* API Rest
+* .NET 5
+* SQL Server
+* Swagger
+* Autenticação e Autorização com JWT
 
 ## Descrição
-O projeto consiste no desenvolvimento de uma aplicação que exibe uma lista de módulos. Cada módulo é composto por componentes, em que neste caso os componentes seriam as aulas.\
-Para ter acesso aos conteúdos o usuário precisa fazer um login.\
-O login é separado em duas *Role*:
-* student -> Apenas visualização das aulas
-* staff -> Visualização e edição dos conteúdos dos módulos
+O projeto consiste no desenvolvimento de uma API que disponibiliza as rotas para acesso aos módulos e aulas. Cada módulo consiste em uma lista de aulas.\
+O gerenciamento dos cursos e aulas é feito apenas por um usuário autenticado e autorizado com a "Role: staff".\
+Qualquer usuário pode visualizar as aulas.
 
+## Build
+Todas as dependências do projeto são instaladas automaticamente pelo NuGet. Assim sendo necessário apenas realizar um `restore`.\
+O banco de dados utilizado é o LocalDB do SQLServer.\
+As migrations já foram geradas no projeto.\
+Para criar o banco de dados, abra o `Package Manager Console`, do Visual Studio, e selecione como `Default project` o `Backend.Infra.Data` e execute o comando `Update-Database`.

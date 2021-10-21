@@ -6,9 +6,6 @@ namespace Backend.Domain.Entities
     public class Course : Entity
     {
         public Name Name { get; private set; }
-        public Description Description { get; private set; }
-        public uint Minutes { get; private set; }
-        public string ImageSrc { get; private set; }
         public DateTime Date { get; private set; }
 
         public int ModuleId { get; private set; }
@@ -20,22 +17,16 @@ namespace Backend.Domain.Entities
 
         }
 
-        public Course(Name name, Description description, uint minutes, string imageSrc, int moduleId, DateTime date)
+        public Course(Name name, DateTime date, int moduleId)
         {
             Name = name;
-            Description = description;
-            Minutes = minutes;
-            ImageSrc = imageSrc;
-            ModuleId = moduleId;
             Date = date;
+            ModuleId = moduleId;
         }
 
-        public void Update(string name, string description, uint minutes, string imageSrc, int moduleId, DateTime date)
+        public void Update(string name, DateTime date, int moduleId)
         {
             Name = new Name(name);
-            Description = new Description(description);
-            Minutes = minutes;
-            ImageSrc = imageSrc;
             ModuleId = moduleId;
             Date = date;
         }

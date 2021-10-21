@@ -9,13 +9,9 @@ namespace Backend.Application.DTOs.Modules
         [MaxLength(30)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
-        public string ImageSrc { get; set; }
-
-        public PostModuleDTO(string name, string imageSrc)
+        public PostModuleDTO(string name)
         {
             Name = name;
-            ImageSrc = imageSrc;
         }
     }
 }

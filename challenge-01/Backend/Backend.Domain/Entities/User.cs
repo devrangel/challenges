@@ -25,11 +25,8 @@ namespace Backend.Domain.Entities
 
         public void Update(string firstName, string lastName, string email)
         {
-            var username = new Username(firstName, lastName);
-            var address = new Email(email);
-
-            Username = username;
-            Email = address;
+            Username = new Username(firstName, lastName);
+            Email = new Email(email);
         }
     }
 }

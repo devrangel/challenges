@@ -22,14 +22,12 @@ namespace Backend.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Usado apenas para development
             services.AddScoped<SeedingService>();
 
             services.AddCors();
-
             services.AddConfig(Configuration);
             services.AddControllers();
 
@@ -57,7 +55,6 @@ namespace Backend.Api
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
         {
             if (env.IsDevelopment())

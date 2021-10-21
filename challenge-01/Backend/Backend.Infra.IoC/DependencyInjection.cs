@@ -13,9 +13,8 @@ namespace Backend.Infra.IoC
     {
         public static IServiceCollection AddConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("Database"),
-                    x => x.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("Database")));
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICourseService, CourseService>();

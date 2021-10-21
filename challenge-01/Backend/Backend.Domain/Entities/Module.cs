@@ -7,7 +7,6 @@ namespace Backend.Domain.Entities
     public class Module : Entity
     {
         public Name Name { get; private set; }
-        public string ImageSrc { get; private set; }
         public ICollection<Course> Courses { get; private set; }
 
         // Para o EF
@@ -16,16 +15,15 @@ namespace Backend.Domain.Entities
 
         }
 
-        public Module(Name name, string imageSrc)
+        public Module(Name name)
         {
             Name = name;
-            ImageSrc = imageSrc;
+            Courses = new List<Course>();
         }
 
-        public void Update(string name, string imageSrc)
+        public void Update(string name)
         {
             Name = new Name(name);
-            ImageSrc = imageSrc;
         }
     }
 }

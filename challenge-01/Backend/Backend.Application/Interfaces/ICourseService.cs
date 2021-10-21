@@ -11,7 +11,7 @@ namespace Backend.Application.Interfaces
         Task<GetCourseDTO> GetByIdAsync(int id);
         Task<ICollection<GetCourseDTO>> GetByModule(int id);
         Task<List<Tuple<string, string>>> CreateAsync(PostCourseDTO courseDto);
-        Task<List<Tuple<string, string>>> UpdateAsync(GetCourseDTO courseDto);
+        Task<List<Tuple<string, string>>> UpdateAsync(PutCourseDTO courseDto);
         Task RemoveAsync(int id);
     }
 }

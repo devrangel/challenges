@@ -10,19 +10,13 @@ namespace Backend.Infra.Data.EntitiesConfiguration
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Date).IsRequired();
-
             builder.OwnsOne(x => x.Name)
                 .Property(x => x.ValueName)
                 .HasColumnName("Name")
                 .HasMaxLength(30)
                 .IsRequired();
 
-            builder.OwnsOne(x => x.Description)
-                .Property(x => x.Message)
-                .HasColumnName("Description")
-                .HasMaxLength(140)
-                .IsRequired();
+            builder.Property(x => x.Date).IsRequired();
 
             builder.HasOne(x => x.Module)
                 .WithMany(x => x.Courses)

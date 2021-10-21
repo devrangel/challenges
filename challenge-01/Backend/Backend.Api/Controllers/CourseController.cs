@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Backend.Api.Controllers
 {
-    [Route("/courses")]
+    [ApiController]
+    [Route("api/v1/courses")]
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _service;
@@ -20,7 +21,6 @@ namespace Backend.Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
         [AllowAnonymous]
         public async Task<ActionResult<ICollection<GetCourseDTO>>> Get()
         {
@@ -37,7 +37,7 @@ namespace Backend.Api.Controllers
         [HttpGet]
         [Route("{id:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<GetCourseDTO>> GetById(int id)
+        public async Task<ActionResult<GetCourseDTO>> GetById([FromRoute] int id)
         {
             var course = await _service.GetByIdAsync(id);
 
@@ -52,7 +52,7 @@ namespace Backend.Api.Controllers
         [HttpGet]
         [Route("modules/{id:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<ICollection<GetCourseDTO>>> GetByModule(int id)
+        public async Task<ActionResult<ICollection<GetCourseDTO>>> GetByModule([FromRoute] int id)
         {
             var courses = await _service.GetByModule(id);
 
@@ -65,9 +65,8 @@ namespace Backend.Api.Controllers
         }
 
         [HttpPost]
-        [Route("")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult> Post([FromBody]PostCourseDTO model)
+        public async Task<ActionResult> Post([FromBody] PostCourseDTO model)
         {
             if(!ModelState.IsValid)
             {
@@ -78,7 +77,9 @@ namespace Backend.Api.Controllers
             {
                 var result = await _service.CreateAsync(model);
 
-                if(result.Count != 0)
+                // Verifica se nao foi gerado nenhum erro na criacao usuario
+                // Caso tenha, result tera uma lista, count > 0, com os erros que aconteceram
+                if (result.Count != 0)
                 {
                     return BadRequest(new { model = model, errorMessage = result });
                 }
@@ -94,7 +95,9 @@ namespace Backend.Api.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult> Put(int id, [FromBody]GetCourseDTO model)
+        public async Task<ActionResult> Put(
+            [FromRoute] int id,
+            [FromBody] PutCourseDTO model)
         {
             if(id != model.Id)
             {
@@ -115,7 +118,9 @@ namespace Backend.Api.Controllers
                     return NotFound(new { message = "Curso não encontrado" });
                 }
 
-                if(result.Count != 0)
+                // Verifica se nao foi gerado nenhum erro na criacao usuario
+                // Caso tenha, result tera uma lista, count > 0, com os erros que aconteceram
+                if (result.Count != 0)
                 {
                     return BadRequest(new { model = model, errorMessage = result });
                 }
@@ -135,7 +140,7 @@ namespace Backend.Api.Controllers
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = "staff")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             var model = await _service.GetByIdAsync(id);
 
